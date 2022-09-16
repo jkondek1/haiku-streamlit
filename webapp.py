@@ -30,7 +30,7 @@ MAX_LEN = 25
 #tokenizer
 tokenizer = GPT2Tokenizer.from_pretrained('fabianmmueller/deep-haiku-gpt-2')
 #model
-poem_stanza_model_1 = torch.load(MODEL_FILE_PATH)
+poem_stanza_model_1 = torch.load(MODEL_FILE_PATH, map_location='cpu')
 #eval
 poem_stanza_model_1.eval()
 
