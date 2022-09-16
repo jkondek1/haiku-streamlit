@@ -1,9 +1,8 @@
 import streamlit as st
-import torch
 from model import MODEL_FILE_PATH
 from image_path import IMAGE_PATH
-from transformers import GPT2Tokenizer, GPT2LMHeadModel
-
+from transformers import GPT2Tokenizer
+import torch
 
 import base64
 def add_bg_from_local(image_file):
