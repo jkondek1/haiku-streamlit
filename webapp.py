@@ -54,5 +54,12 @@ def preprocess_output(text):
 output_text = tokenizer.decode(sample_outputs[0], skip_special_tokens=True)
 st.title(prompt_input)
 text = preprocess_output(output_text)
-for part in text.split("/"):
-    st.write(part)
+
+col1, col2, col3 = st.columns(3)
+with col1:
+    st.empty()
+with col2:
+    for part in text.split("/"):
+        st.write(part)
+with col3:
+    st.empty()
