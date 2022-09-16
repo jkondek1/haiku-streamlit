@@ -24,7 +24,7 @@ add_bg_from_local(IMAGE_PATH)
 st.title("HAIKU GENERATION")
 
 label = 'Enter prompt here:'
-prompt_input = st.text_input(label, value="")
+prompt_input = st.text_input(label, value="Morning breeze")
 
 MAX_LEN = 25
 #tokenizer
@@ -34,31 +34,34 @@ poem_stanza_model_1 = torch.load(MODEL_FILE_PATH, map_location='cpu')
 #eval
 poem_stanza_model_1.eval()
 
-generated = torch.tensor(tokenizer.encode("(" + prompt_input + "=")).unsqueeze(0)
-sample_outputs = poem_stanza_model_1.generate(
-                                generated,
-                                do_sample=True,
-                                top_k=50,
-                                max_length=MAX_LEN,
-                                top_p=0.95,
-                                num_return_sequences=1
-                                )
-
-
 #output the hiku text
 def preprocess_output(text):
     text = text.split(")")[0]
     text = text.split("=")[1]
     return text
 
-output_text = tokenizer.decode(sample_outputs[0], skip_special_tokens=True)
-st.title(prompt_input)
-text = preprocess_output(output_text)
 
-col1, col2, col3 = st.columns(3)
+if prompt_input != 'Morning breeze':
+    generated = torch.tensor(tokenizer.encode("(" + prompt_input + "=")).unsqueeze(0)
+    sample_outputs = poem_stanza_model_1.generate(
+        generated,
+        do_sample=True,
+        top_k=50,
+        max_length=MAX_LEN,
+        top_p=0.95,
+        num_return_sequences=1
+    )
+    output_text = tokenizer.decode(sample_outputs[0], skip_special_tokens=True)
+    text = preprocess_output(output_text)
+else:
+    output_text = 'Crisp air fills the lungs. / A pleasant songbird calls out. / Greetings from the trees!'
+    text = output_text
+
+col1, col2, col3 = st.columns([0.25, 0.50, 0.25])
 with col1:
     st.empty()
 with col2:
+    st.title(prompt_input)
     for part in text.split("/"):
         st.write(part)
 with col3:
